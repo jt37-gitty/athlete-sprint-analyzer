@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h2>Analyze Sprint</h2>
+  <form method="POST">
+    <label>Total Time (s):</label><br>
+    <input type="text" name="total_time" required><br><br>
+    <button type="submit">Analyze</button>
+  </form>
+
+  {% if total_time %}
+    <h3>Predicted Breakdown</h3>
+    <ul>
+      <li><strong>T1:</strong> {{ t1 }} s</li>
+      <li><strong>T2:</strong> {{ t2 }} s</li>
+      <li><strong>T3:</strong> {{ t3 }} s</li>
+      <li><strong>Total Time:</strong> {{ total_time }} s</li>
+      <li><strong>Category:</strong> {{ category }}</li>
+      <li><strong>Score:</strong> {{ score }}</li>
+    </ul>
+
+    <h4>Suggestions:</h4>
+    <ul>
+      {% for suggestion in suggestions %}
+        <li>{{ suggestion }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}

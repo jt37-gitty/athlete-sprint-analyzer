@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h2>Welcome, {{ session['username'] }}</h2>
+
+  <p>
+    <a href="{{ url_for('analyze') }}">Analyze New Run</a> |
+    <a href="{{ url_for('logout') }}"> Logout</a>
+  </p>
+
+  <h3>Your Past Runs</h3>
+  {% if runs %}
+    <table border="1" cellpadding="8" cellspacing="0">
+      <tr>
+        <th>Total Time (s)</th>
+        <th>T1</th>
+        <th>T2</th>
+        <th>T3</th>
+        <th>Explosiveness</th>
+        <th>Endurance</th>
+        <th>Strength</th>
+        <th>Category</th>
+        <th>Feedback</th>
+      </tr>
+      {% for run in runs %}
+        <tr>
+          <td>{{ run.total_time }}</td>
+          <td>{{ run.t1 }}</td>
+          <td>{{ run.t2 }}</td>
+          <td>{{ run.t3 }}</td>
+          <td>{{ run.explosiveness }}</td>
+          <td>{{ run.endurance }}</td>
+          <td>{{ run.strength }}</td>
+          <td>{{ run.category }}</td>
+          <td>
+            {% if run.weaknesses %}
+              {{ run.weaknesses | join(', ') }}
+            {% else %}
+              -
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>No run data available yet.</p>
+  {% endif %}
+
+  <h3>Your Progress Chart</h3>
+  <canvas id="sprintChart" width="600" height="300"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ url_for('static', filename='chart.js') }}"></script>
+
+  <script>
+    const runLabels = Array.from({ length: {{ runs | length }} }, (_, i) => `Run ${i + 1}`);
+    const totalTimes = {{ runs | map(attribute='total_time') | list | tojson }};
+    const t1List = {{ runs | map(attribute='t1') | list | tojson }};
+    const t2List = {{ runs | map(attribute='t2') | list | tojson }};
+    const t3List = {{ runs | map(attribute='t3') | list | tojson }};
+
+    renderSprintChart("sprintChart", runLabels, totalTimes, t1List, t2List, t3List);
+  </script>
+{% endblock %}

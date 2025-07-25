@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Run Analysis Result</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Run Analysis Result</h1>
+
+    <p><strong>Total Time:</strong> {{ result.total_time }} s</p>
+    <p><strong>Acceleration Phase (T1):</strong> {{ result.t1 }} s</p>
+    <p><strong>Max Velocity Phase (T2):</strong> {{ result.t2 }} s</p>
+    <p><strong>Sub-Max Velocity Phase (T3):</strong> {{ result.t3 }} s</p>
+
+    <hr>
+
+    <p><strong>Explosiveness:</strong> {{ result.explosiveness }}</p>
+    <p><strong>Endurance:</strong> {{ result.endurance }}</p>
+    <p><strong>Strength:</strong> {{ result.strength }}</p>
+    <p><strong>Category:</strong> {{ result.category }}</p>
+
+    {% if result.weaknesses %}
+      <p><strong>Weaknesses:</strong></p>
+      <ul>
+        {% for issue in result.weaknesses %}
+          <li>{{ issue }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p><strong>No major weaknesses detected.</strong></p>
+    {% endif %}
+
+    <br>
+    <a href="{{ url_for('dashboard') }}" class="btn">Back to Dashboard</a>
+  </div>
+</body>
+</html>
